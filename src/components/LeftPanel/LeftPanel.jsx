@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -53,11 +54,16 @@ const styles = theme => ({
 
 class LeftPanel extends React.Component {
     state = {
-        open: true,
+        projects: false,
+        professional: false,
     };
- 
-    handleClick = () => {
-        this.setState(state => ({ open: !this.state.open }))
+
+    handleProjects = () => {
+        this.setState({ projects: !this.state.projects })
+    }
+
+    handleProfessional = () => {
+        this.setState({ professional: !this.state.professional })
     }
 
     render() {
@@ -81,16 +87,31 @@ class LeftPanel extends React.Component {
                         <ListItemIcon classes={{ root: classes.icon }}><FamilyIcon /></ListItemIcon>
                         <ListItemText primary={'Family'} />
                     </ListItem>
-                    <ListItem button key={'Projects'} classes={{  button: classes.listItem }}>
+                    <ListItem button key={'Projects'} onClick={this.handleProjects} classes={{  button: classes.listItem }}>
                         <ListItemIcon classes={{ root: classes.icon }}><ProjectsIcon /></ListItemIcon>
                         <ListItemText primary={'Projects'} />
+                        {this.state.projects ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
-                    <ListItem button key={'Professional'} onClick={this.handleClick} classes={{  button: classes.listItem }}>
+                    <Collapse in={this.state.projects} timeout='auto' unmountOnExit>
+                        <List component='div' disablePadding>
+                            <ListItem button key={'Achieve'} className={classes.nested} classes={{  button: classes.listItem }}>
+                                <ListItemIcon classes={{ root: classes.icon }}><ExperienceIcon /></ListItemIcon>
+                                <ListItemText inset primary='Achieve' />
+                            </ListItem>
+                            <Link to={'/rodeobullnamegenerator'}>
+                                <ListItem button key={'eight'} className={classes.nested} classes={{  button: classes.listItem }}>
+                                    <ListItemIcon classes={{ root: classes.icon }}><EducationIcon /></ListItemIcon>
+                                    <ListItemText inset primary='8 seconds' />
+                                </ListItem>
+                            </Link>
+                        </List>
+                    </Collapse>
+                    <ListItem button key={'Professional'} onClick={this.handleProfessional} classes={{  button: classes.listItem }}>
                         <ListItemIcon classes={{ root: classes.icon }}><ProfessionalIcon /></ListItemIcon>
                         <ListItemText primary={'Professional'} />
-                        {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                        {this.state.professional ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
-                    <Collapse in={this.state.open} timeout='auto' unmountOnExit>
+                    <Collapse in={this.state.professional} timeout='auto' unmountOnExit>
                         <List component='div' disablePadding>
                             <ListItem button key={'Experience'} className={classes.nested} classes={{  button: classes.listItem }}>
                                 <ListItemIcon classes={{ root: classes.icon }}><ExperienceIcon /></ListItemIcon>
